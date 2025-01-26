@@ -1,0 +1,115 @@
+openapi: 3.0.3
+info:
+  title: Recall API
+  description: API pour gérer les rappels.
+  version: 1.0.0
+paths:
+  /recall:
+    get:
+      summary: Récupère une liste de rappels
+      description: Récupère une liste de rappels. Si un paramètre `name` est fourni, la liste sera filtrée par nom.
+      parameters:
+        - in: query
+          name: name
+          schema:
+            type: string
+          description: Nom du rappel à filtrer
+      responses:
+        "200":
+          description: Liste des rappels
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Recall"
+              examples:
+                rappel:
+                  summary: Exemple de rappel
+                  value:
+                    - id: 1
+                      uri: "/recall/1"
+                      date: "2023-10-01"
+                      extUrl: "https://example.com/recall/1"
+                      importId: "import-123"
+                      imageUri: "https://example.com/images/recall/1.jpg"
+                      url: "https://example.com/recall/1"
+                      tags:
+                        - id: 1
+                          name: "Tag1"
+                          value: "Value1"
+                      productName: "Produit de rappel"
+                      country:
+                        - id: 1
+                          code: "FR"
+                          name: "France"
+                      manufacturerCountry:
+                        - id: 1
+                          code: "FR"
+                          name: "France"
+        "400":
+          description: Requête invalide
+        "500":
+          description: Erreur interne du serveur
+components:
+  schemas:
+    Recall:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        uri:
+          type: string
+          example: "/recall/1"
+        date:
+          type: string
+          format: date
+          example: "2023-10-01"
+        extUrl:
+          type: string
+          example: "https://example.com/recall/1"
+        importId:
+          type: string
+          example: "import-123"
+        imageUri:
+          type: string
+          example: "https://example.com/images/recall/1.jpg"
+        url:
+          type: string
+          example: "https://example.com/recall/1"
+        tags:
+          type: array
+          items:
+            $ref: "#/components/schemas/Tag"
+        productName:
+          type: string
+          example: "Produit de rappel"
+        manufacturerCountry:
+          type: array
+          items:
+            $ref: "#/components/schemas/Country"
+    Tag:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "Tag1"
+        value:
+          type: string
+          example: "Value1"
+    Country:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        code:
+          type: string
+          example: "FR"
+        name:
+          type: string
+          example: "France"
